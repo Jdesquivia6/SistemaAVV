@@ -73,4 +73,23 @@ public class VehiculoService {
     private boolean fechasSeSuperponen(Date inicio1, Date fin1, Date inicio2, Date fin2) {
         return inicio1.before(fin2) && fin1.after(inicio2);
     }
+
+    public Vehiculo guardarVehiculo(Vehiculo vehiculo) {
+
+        if (vehiculo.getMarca() == null || vehiculo.getModelo() == null || vehiculo.getAnio() <= 0) {
+
+            throw new IllegalArgumentException("Los campos obligatorios son requeridos.");
+        }
+
+        if (vehiculo.getAnio() < 1900 || vehiculo.getPrecio() <= 0 || vehiculo.getPrecioHora() <= 0) {
+
+            throw new IllegalArgumentException("Valores numéricos no válidos.");
+        }
+
+        vehiculo.setMarca(vehiculo.getMarca().toUpperCase());
+        vehiculo.setModelo(vehiculo.getModelo().toUpperCase());
+
+        return vehiculoRepository.save(vehiculo);
+
+    }
 }

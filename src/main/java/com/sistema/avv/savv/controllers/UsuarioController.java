@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,6 +50,20 @@ public class UsuarioController {
             e.getMessage();
             e.getLocalizedMessage();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<?> saveUsuario(@RequestBody Usuario usuario) {
+        try {
+            Usuario usuarioNuevo = usuarioService.guardarUsuario(usuario);
+            return ResponseEntity.status(HttpStatus.CREATED).body(usuarioNuevo);
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            String mensajeError = "Error al guardar el usuario: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(mensajeError);
         }
     }
 
