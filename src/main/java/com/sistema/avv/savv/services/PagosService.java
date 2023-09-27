@@ -9,6 +9,7 @@ import com.sistema.avv.savv.models.Alquiler;
 import com.sistema.avv.savv.models.PagoAlquiler;
 import com.sistema.avv.savv.repository.PagosRepository;
 import java.util.Date;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +44,10 @@ public class PagosService {
 
         alquiler.setPagado(true);
         alquilerService.actualizarAlquiler(alquiler);
+    }
+
+    public List<PagoAlquiler> listAllPayments() {
+        return pagosRepository.findAll();
     }
 
 }

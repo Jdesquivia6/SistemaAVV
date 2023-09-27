@@ -7,6 +7,7 @@ package com.sistema.avv.savv.services;
 
 import com.sistema.avv.savv.models.Usuario;
 import com.sistema.avv.savv.repository.UsuarioRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +28,9 @@ public class UsuarioService {
     public Usuario obtenerUsuarioForID(Long usuarioId) {
         return usuarioRepository.findById(usuarioId).orElseThrow(()
                 -> new RuntimeException("Usuario no encontrado"));
+    }
+
+    public List<Usuario> listarUsuarios() {
+        return usuarioRepository.findAll();
     }
 }

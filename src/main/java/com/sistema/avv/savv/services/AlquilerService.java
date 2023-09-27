@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,10 @@ public class AlquilerService {
         this.alquilerRepository = alquilerRepository;
         this.tiempoAlquilerRepository = tiempoAlquilerRepository;
         this.vehiculoRepository = vehiculoRepository;
+    }
+
+    public List<Alquiler> getAllAlquiler() {
+        return alquilerRepository.findAll();
     }
 
     public Alquiler realizarAlquiler(Long usuarioId, Long vehiculoId, Date fechaEntrada, Date fechaSalida) {
@@ -130,7 +135,7 @@ public class AlquilerService {
             throw new IllegalArgumentException("El alquiler no puede ser nulo.");
         }
 
-        if (alquiler.isPagado()) {
+        if (alquiler.getPagado() != null && alquiler.getPagado().equals("")) {
             throw new IllegalStateException("El alquiler ya ha sido pagado y no se puede actualizar.");
         }
 

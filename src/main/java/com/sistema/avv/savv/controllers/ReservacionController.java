@@ -5,9 +5,12 @@
  */
 package com.sistema.avv.savv.controllers;
 
+import com.sistema.avv.savv.models.Alquiler;
 import com.sistema.avv.savv.repository.VehiculoRepository;
+import com.sistema.avv.savv.services.AlquilerService;
 import com.sistema.avv.savv.services.VehiculoService;
 import java.util.Date;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +28,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReservacionController {
 
     private final VehiculoService vehiculoService;
+    private final AlquilerService alquilerService;
 
     @Autowired
     private VehiculoRepository v;
 
     @Autowired
-    public ReservacionController(VehiculoService vehiculoService) {
+    public ReservacionController(VehiculoService vehiculoService, AlquilerService alquilerService) {
         this.vehiculoService = vehiculoService;
+        this.alquilerService = alquilerService;
+    }
+
+    @GetMapping("/listarAlquileres")
+    public ResponseEntity<List<Alquiler>> getAllAlquiler() {
+        return ResponseEntity.ok(alquilerService.getAllAlquiler());
     }
 
     @GetMapping("/verificar")

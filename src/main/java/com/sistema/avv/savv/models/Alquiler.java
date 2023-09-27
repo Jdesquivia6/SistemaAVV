@@ -41,6 +41,6 @@ public class Alquiler implements Serializable{
     
     private int duracionHoras;
     
-    private boolean pagado;
+    private Boolean pagado;
     
 }
