@@ -9,7 +9,9 @@ import com.sistema.avv.savv.models.Rol;
 import com.sistema.avv.savv.models.Usuario;
 import com.sistema.avv.savv.repository.RolRepository;
 import com.sistema.avv.savv.repository.UsuarioRepository;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,7 +60,43 @@ public class UsuarioService {
         } else {
             throw new RuntimeException("Debe especificar un nombre de rol.");
         }
-        
+
         return usuarioRepository.save(usuario);
     }
+
+    public Map<String, Object> eliminarUsuario(Long id) {
+
+        Map<String, Object> resultado = new HashMap<>();
+
+        Usuario usuarioExistente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("El usuario no existe"));
+
+        if (usuarioExistente != null) {
+            usuarioRepository.delete(usuarioExistente);
+            resultado.put("exito", true);
+            resultado.put("mensaje", "Usuario eliminado correctamente.");
+        } else {
+            resultado.put("exito", false);
+            resultado.put("mensaje", "El usuario no existe.");
+        }
+
+        return resultado;
+
+    }
+    
+    public Usuario actualizarUsuario(Long id, Usuario usuarioActualizado) {
+        Usuario usuarioExistente = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("El usuario no existe"));
+
+        usuarioExistente.setNombre(usuarioActualizado.getNombre());
+        usuarioExistente.setContrasenia(usuarioActualizado.getContrasenia());
+        usuarioExistente.setCorreoElectronico(usuarioActualizado.getCorreoElectronico());
+        usuarioExistente.setDireccion(usuarioActualizado.getDireccion());
+        usuarioExistente.setNumeroTelefono(usuarioActualizado.getNumeroTelefono());
+        
+        usuarioExistente.setRol(usuarioActualizado.getRol());
+
+        return usuarioRepository.save(usuarioExistente);
+    }
+
 }

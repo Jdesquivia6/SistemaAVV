@@ -11,7 +11,9 @@ import com.sistema.avv.savv.repository.ReservacionRepository;
 import com.sistema.avv.savv.repository.VehiculoRepository;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -90,6 +92,41 @@ public class VehiculoService {
         vehiculo.setModelo(vehiculo.getModelo().toUpperCase());
 
         return vehiculoRepository.save(vehiculo);
+
+    }
+
+    public Vehiculo actualizarVehiculo(Long id, Vehiculo vehiculoActualizado) {
+        Vehiculo vehiculoExistente = vehiculoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("El vehículo no existe"));
+
+        vehiculoExistente.setMarca(vehiculoActualizado.getMarca());
+        vehiculoExistente.setModelo(vehiculoActualizado.getModelo());
+        vehiculoExistente.setAnio(vehiculoActualizado.getAnio());
+        vehiculoExistente.setTipo(vehiculoActualizado.getTipo());
+        vehiculoExistente.setPrecio(vehiculoActualizado.getPrecio());
+        vehiculoExistente.setEstado(vehiculoActualizado.getEstado());
+        vehiculoExistente.setPrecioHora(vehiculoActualizado.getPrecioHora());
+
+        return vehiculoRepository.save(vehiculoExistente);
+    }
+
+    public Map<String, Object> eliminarVehiculo(Long id) {
+
+        Map<String, Object> resultado = new HashMap<>();
+
+        Vehiculo vehiculoExistente = vehiculoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("El vehículo no existe"));
+
+        if (vehiculoExistente != null) {
+            vehiculoRepository.delete(vehiculoExistente);
+            resultado.put("exito", true);
+            resultado.put("mensaje", "Vehículo eliminado correctamente.");
+        } else {
+            resultado.put("exito", false);
+            resultado.put("mensaje", "El vehículo no existe.");
+        }
+
+        return resultado;
 
     }
 }
